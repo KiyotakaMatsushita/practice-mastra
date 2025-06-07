@@ -6,6 +6,7 @@ import { z } from 'zod';
 // 要約エージェントを作成
 const summaryAgent = new Agent({
   name: 'URL Content Scraper',
+  description: 'Webページコンテンツの分析と要約を行う専門エージェント',
   instructions: `あなたは優秀なコンテンツのスクレイピング専門家です。
 与えられたWebページのコンテンツを分析し、以下の要件に従って内容を抽出してください：
 

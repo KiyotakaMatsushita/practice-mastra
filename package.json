@@ -5,12 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "mastra dev",
-    "build": "mastra build",
-    "test:url-parser": "npx tsx src/test-url-parser.ts",
-    "mcp:stdio": "npx tsx mcp-server.ts stdio",
-    "mcp:http": "npx tsx mcp-server.ts http",
-    "mcp:streamable": "npx tsx mcp-server.ts streamable",
-    "mcp:dev": "npx tsx mcp-server.ts http 3001"
+    "build": "mastra build"
   },
   "keywords": [],
   "author": "",

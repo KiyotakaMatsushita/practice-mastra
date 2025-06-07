@@ -81,14 +81,6 @@ npm run mcp:streamable
 npm run mcp:dev
 ```
 
-#### 直接実行
-
-```bash
-# 様々なオプションで起動
-npx tsx mcp-server.ts stdio
-npx tsx mcp-server.ts http 3001
-npx tsx mcp-server.ts streamable 3002
-```
 
 #### 公開されるツール
 
@@ -100,35 +92,6 @@ MCPサーバーとして起動すると、以下のツールが利用可能に�
 - **ask_urlParserAgent**: URLパーサーエージェントへの質問
 - **run_urlParserWorkflow**: URLパーサーワークフローの実行
 
-#### 外部クライアントでの設定例
-
-**Cursor設定** (.cursor-settings/settings.json):
-```json
-{
-  "mcp": {
-    "servers": {
-      "mastra-app": {
-        "command": "npx",
-        "args": ["tsx", "path/to/mcp-server.ts", "stdio"],
-        "cwd": "path/to/my-mastra-app"
-      }
-    }
-  }
-}
-```
-
-**Claude Desktop設定** (claude_desktop_config.json):
-```json
-{
-  "mcpServers": {
-    "mastra-app": {
-      "command": "npx",
-      "args": ["tsx", "path/to/mcp-server.ts", "stdio"],
-      "cwd": "path/to/my-mastra-app"
-    }
-  }
-}
-```
 
 ### API経由でのエージェント使用
 
