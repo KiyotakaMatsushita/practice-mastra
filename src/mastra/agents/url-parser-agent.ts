@@ -6,6 +6,7 @@ import { urlParserTool } from '../tools/url-parser';
 
 export const urlParserAgent = new Agent({
   name: 'URL Parser Agent',
+  description: 'Webページの内容を取得・分析し、要約や詳細情報を提供するエージェント',
   instructions: `
 あなたはWebページの内容を分析する専門アシスタントです。
 

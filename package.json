@@ -6,7 +6,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "mastra dev",
     "build": "mastra build",
-    "test:url-parser": "npx tsx src/test-url-parser.ts"
+    "test:url-parser": "npx tsx src/test-url-parser.ts",
+    "mcp:stdio": "npx tsx mcp-server.ts stdio",
+    "mcp:http": "npx tsx mcp-server.ts http",
+    "mcp:streamable": "npx tsx mcp-server.ts streamable",
+    "mcp:dev": "npx tsx mcp-server.ts http 3001"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +26,7 @@
     "@mastra/core": "^0.10.1",
     "@mastra/libsql": "^0.10.0",
     "@mastra/loggers": "^0.10.0",
+    "@mastra/mcp": "^0.10.2",
     "@mastra/memory": "^0.10.1",
     "zod": "^3.25.42"
   },

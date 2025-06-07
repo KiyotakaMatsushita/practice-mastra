@@ -29,6 +29,13 @@
 - 重要ポイントの抽出と整理
 - 自然な日本語での表現
 
+### 5. 🔌 MCPサーバー対応
+- **Model Context Protocol (MCP)** サーバーとしてツールとエージェントを公開
+- CursorやClaude Desktopなどの外部MCPクライアントから利用可能
+- 複数の接続方式をサポート：stdio、HTTP SSE、Streamable HTTP
+- 自動的にエージェントをツール化（`ask_agentName`）
+- ワークフローもツールとして利用可能（`run_workflowName`）
+
 ## 📦 インストール
 
 ```bash
@@ -53,6 +60,75 @@ npm run dev
 ```
 
 これにより、Mastraサーバーが `http://localhost:4111` で起動します。
+
+### 🔌 MCPサーバーの起動
+
+このプロジェクトはMCPサーバーとしても動作し、CursorやClaude Desktopなどの外部クライアントから利用できます。
+
+#### 利用可能なコマンド
+
+```bash
+# 標準入出力モード（CLI/スクリプト用）
+npm run mcp:stdio
+
+# HTTP Server-Sent Events モード（ポート3001）
+npm run mcp:http
+
+# Streamable HTTP モード（ポート3002、推奨）
+npm run mcp:streamable
+
+# 開発用（HTTP、ポート3001）
+npm run mcp:dev
+```
+
+#### 直接実行
+
+```bash
+# 様々なオプションで起動
+npx tsx mcp-server.ts stdio
+npx tsx mcp-server.ts http 3001
+npx tsx mcp-server.ts streamable 3002
+```
+
+#### 公開されるツール
+
+MCPサーバーとして起動すると、以下のツールが利用可能になります：
+
+- **weatherTool**: 天気情報の取得
+- **urlParserTool**: URLの内容をパース
+- **ask_weatherAgent**: 天気エージェントへの質問
+- **ask_urlParserAgent**: URLパーサーエージェントへの質問
+- **run_urlParserWorkflow**: URLパーサーワークフローの実行
+
+#### 外部クライアントでの設定例
+
+**Cursor設定** (.cursor-settings/settings.json):
+```json
+{
+  "mcp": {
+    "servers": {
+      "mastra-app": {
+        "command": "npx",
+        "args": ["tsx", "path/to/mcp-server.ts", "stdio"],
+        "cwd": "path/to/my-mastra-app"
+      }
+    }
+  }
+}
+```
+
+**Claude Desktop設定** (claude_desktop_config.json):
+```json
+{
+  "mcpServers": {
+    "mastra-app": {
+      "command": "npx",
+      "args": ["tsx", "path/to/mcp-server.ts", "stdio"],
+      "cwd": "path/to/my-mastra-app"
+    }
+  }
+}
+```
 
 ### API経由でのエージェント使用
 

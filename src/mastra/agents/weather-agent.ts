@@ -7,6 +7,7 @@ import { weatherTool } from '../tools/weather-tool';
 
 export const weatherAgent = new Agent({
   name: 'Weather Agent',
+  description: 'Weather assistant that provides accurate weather information for any location',
   instructions: `
       You are a helpful weather assistant that provides accurate weather information.
 
