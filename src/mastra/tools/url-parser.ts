@@ -52,11 +52,6 @@ export const urlParserTool = createTool({
         .replace(/\s+/g, ' ')
         .trim();
 
-      // 最初の3000文字に制限
-      if (content.length > 3000) {
-        content = content.substring(0, 3000) + '...';
-      }
-
       return {
         title,
         content,

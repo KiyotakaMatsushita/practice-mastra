@@ -54,12 +54,6 @@ npm run dev
 
 これにより、Mastraサーバーが `http://localhost:4111` で起動します。
 
-### エージェントとワークフローのテスト
-
-```bash
-npx tsx src/test-url-parser.ts
-```
-
 ### API経由でのエージェント使用
 
 ```bash

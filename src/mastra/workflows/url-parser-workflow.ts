@@ -15,6 +15,10 @@ const summaryAgent = new Agent({
 4. 日本語で自然な文章で表現する
 5. 内容が不完全や理解困難な場合はその旨を明記する`,
   model: openai('gpt-4o-mini'),
+  defaultGenerateOptions: {
+    maxTokens: 16384,
+    temperature: 0
+  },
 });
 
 // URLを取得してパースするステップ
@@ -68,11 +72,6 @@ const fetchUrlStep = createStep({
         // 連続する空白文字を単一のスペースに
         .replace(/\s+/g, ' ')
         .trim();
-
-      // 最初の3000文字に制限
-      if (content.length > 3000) {
-        content = content.substring(0, 3000) + '...';
-      }
 
       return {
         title,
