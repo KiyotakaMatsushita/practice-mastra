@@ -5,12 +5,12 @@ import { z } from 'zod';
 
 // 要約エージェントを作成
 const summaryAgent = new Agent({
-  name: 'URL Content Summarizer',
-  instructions: `あなたは優秀なコンテンツ要約の専門家です。
-与えられたWebページのコンテンツを分析し、以下の要件に従って要約を作成してください：
+  name: 'URL Content Scraper',
+  instructions: `あなたは優秀なコンテンツのスクレイピング専門家です。
+与えられたWebページのコンテンツを分析し、以下の要件に従って内容を抽出してください：
 
-1. 主要なポイントを3-5個にまとめる
-2. 読みやすく構造化された要約を作成する
+1. 概要について、読みやすく構造化された要約を作成する
+2. ページ内に出現する単語について、すべてを網羅的に単語リストを作成する
 3. 重要な詳細やデータは保持する
 4. 日本語で自然な文章で表現する
 5. 内容が不完全や理解困難な場合はその旨を明記する`,
@@ -158,6 +158,11 @@ const aiSummaryStep = createStep({
     basicSummary: z.string(),
     aiSummary: z.string(),
     keyPoints: z.array(z.string()),
+    wordList: z.array(z.object({
+      kanji: z.string(),
+      reading: z.string(),
+      meaning: z.string(),
+    })),
     wordCount: z.number(),
     url: z.string(),
     success: z.boolean(),
@@ -169,6 +174,7 @@ const aiSummaryStep = createStep({
         basicSummary: inputData.summary,
         aiSummary: 'コンテンツの取得に失敗したため、AI要約を作成できませんでした。',
         keyPoints: [],
+        wordList: [],
       };
     }
 
@@ -176,7 +182,7 @@ const aiSummaryStep = createStep({
 
     try {
       // エージェントに要約を依頼
-      const prompt = `以下のWebページの内容を要約してください：
+      const prompt = `以下のWebページの内容を抽出してください：
 
 タイトル: ${inputData.title}
 URL: ${inputData.url}
@@ -185,7 +191,8 @@ URL: ${inputData.url}
 以下の形式でJSON形式で返答してください：
 {
   "summary": "コンテンツの詳細な要約（3-5文で）",
-  "keyPoints": ["重要なポイント1", "重要なポイント2", "重要なポイント3"]
+  "keyPoints": ["重要なポイント1", "重要なポイント2", "重要なポイント3"],
+  "wordList": [{"kanji": "漢字表記", "reading": "読み方", "meaning": "単語の意味"}]
 }`;
 
       const response = await summaryAgent.generate([
@@ -194,6 +201,11 @@ URL: ${inputData.url}
         output: z.object({
           summary: z.string(),
           keyPoints: z.array(z.string()),
+          wordList: z.array(z.object({
+            kanji: z.string(),
+            reading: z.string(),
+            meaning: z.string(),
+          })),
         }),
       });
 
@@ -203,6 +215,7 @@ URL: ${inputData.url}
         basicSummary: inputData.summary,
         aiSummary: response.object.summary,
         keyPoints: response.object.keyPoints,
+        wordList: response.object.wordList,
         wordCount: inputData.wordCount,
         url: inputData.url,
         success: inputData.success,
@@ -215,6 +228,7 @@ URL: ${inputData.url}
         basicSummary: inputData.summary,
         aiSummary: `AI要約の作成に失敗しました: ${error instanceof Error ? error.message : String(error)}`,
         keyPoints: [],
+        wordList: [],
         wordCount: inputData.wordCount,
         url: inputData.url,
         success: inputData.success,
@@ -236,6 +250,11 @@ export const urlParserWorkflow = createWorkflow({
     basicSummary: z.string(),
     aiSummary: z.string(),
     keyPoints: z.array(z.string()),
+    wordList: z.array(z.object({
+      kanji: z.string(),
+      reading: z.string(),
+      meaning: z.string(),
+    })),
     wordCount: z.number(),
     url: z.string(),
     success: z.boolean(),
